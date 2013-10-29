@@ -22,10 +22,10 @@ class Conexao {
     private $MySQL_database       = "teste";
     
     // Microsoft SQL Server
-    private $Mssql_server         = "10.72.202.25";
-    private $Mssql_user           = "mssql";
-    private $Mssql_password       = "123456";
-    private $Mssql_database       = "REPORTS_PRD";
+    private $Mssql_server         = "";
+    private $Mssql_user           = "";
+    private $Mssql_password       = "";
+    private $Mssql_database       = "";
     
     // mSQL
     private $mSQL_server          = "";
