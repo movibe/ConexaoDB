@@ -10,94 +10,99 @@
  */
 
 
-//Connecting to the server
-// $conexao = new ConexaoDB('mysql');
+// Iniciar Conexão
+// $conexao = new Conexao('mysql');
 
-//Defining DBs
-
-class ConexaoDB {
+class Conexao {
 
     // Mysql
-    var $MySQL_server         = "";
-    var $MySQL_user           = "";
-    var $MySQL_password       = "";
-    var $MySQL_database       = "";
+    private $MySQL_server         = "localhost";
+    private $MySQL_user           = "root";
+    private $MySQL_password       = "mysql";
+    private $MySQL_database       = "teste";
     
     // Microsoft SQL Server
-    var $Mssql_server         = "";
-    var $Mssql_user           = "";
-    var $Mssql_password       = "";
-    var $Mssql_database       = "";
+    private $Mssql_server         = "10.72.202.25";
+    private $Mssql_user           = "mssql";
+    private $Mssql_password       = "123456";
+    private $Mssql_database       = "REPORTS_PRD";
     
     // mSQL
-    var $mSQL_server          = "";
-    var $mSQL_user            = "";
-    var $mSQL_password        = "";
-    var $mSQL_database        = "";
+    private $mSQL_server          = "";
+    private $mSQL_user            = "";
+    private $mSQL_password        = "";
+    private $mSQL_database        = "";
     
     // SQLite
-    var $SQLite_user          = "";
-    var $SQLite_password      = "";
-    var $SQLite_database      = "";
+    private $SQLite_user          = "";
+    private $SQLite_password      = "";
+    private $SQLite_database      = "";
     
     // SQLite3
-    var $SQLite3_user         = "";
-    var $SQLite3_password     = "";
-    var $SQLite3_database     = "";
+    private $SQLite3_user         = "";
+    private $SQLite3_password     = "";
+    private $SQLite3_database     = "";
     
     
     // Postgree
-    var $PostgreeSQL_server   = "";
-    var $PostgreeSQL_user     = "";
-    var $PostgreeSQL_password = "";
-    var $PostgreeSQL_database = "";
+    private $PostgreeSQL_server   = "";
+    private $PostgreeSQL_user     = "";
+    private $PostgreeSQL_password = "";
+    private $PostgreeSQL_database = "";
     
     // Firebird/InterBase
-    var $Firebird_user        = "";
-    var $Firebird_password    = "";
-    var $Firebird_database    = "";
+    private $Firebird_user        = "";
+    private $Firebird_password    = "";
+    private $Firebird_database    = "";
     
     
     // Oracle OCI8
-    var $Oracle_server        = "";
-    var $Oracle_user          = "";
-    var $Oracle_password      = "";
-    var $Oracle_database      = "";
+    private $Oracle_server        = "";
+    private $Oracle_user          = "";
+    private $Oracle_password      = "";
+    private $Oracle_database      = "";
     
     // LDAP
-    var $ldap_server          = '';
-    var $ldap_user            = '';
-    var $ldap_pass            = 'PASSWORD_HERE';
-    var $ldap_tree            = "OU=SBSUsers,OU=Users,OU=MyBusiness,DC=myDomain,DC=local";
-    var $ldap_bind            ="";
+    private $ldap_server          = 'svr.domain.com';
+    private $ldap_user            = 'administrator';
+    private $ldap_pass            = 'PASSWORD_HERE';
+    private $ldap_tree            = "OU=SBSUsers,OU=Users,OU=MyBusiness,DC=myDomain,DC=local";
+    private $ldap_bind            ="";
     
     // Variaveis Principais
-    var $base                 = "";
-    var $query                = "";
-    var $link                 = "";
+    private $base                 = "mysql";
+    private $query                = "";
+    private $link                 = "";
 
 
     
     // Metodos da classe
     //Metodo Construtor
 
-    function ConexaoDB($base) {
-        $this->conexao($base);
+    public function __construct($base='mysql'){
+        // 
         $this->base = $base;
+        $this->conectar();
     }
 
     // Metodo de Conexao com o banco
-    function conexao($base='mysql') {
+    public function conectar() {
 
-        switch ($base) {
+        switch ($this->base) {
 
             case 'mysql':
                 $this->link = mysql_connect($this->MySQL_server, $this->MySQL_user, $this->MySQL_password);
-                 if (!$this->link) {
-                    die("Erro de conexao");
+              
+                 if (!$this->link ) {
+                    return ("Erro de conexao");
                 } elseif (!mysql_select_db($this->MySQL_database, $this->link)) {
-                    die("Erro na hora de selecionar o banco");
-                }   
+                    return ("Erro na hora de selecionar o banco: ".$this->MySQL_database);
+                } else {
+                    return $this->link;
+                } 
+
+                
+
                 break;
 
             case 'sqlserver':
@@ -154,7 +159,7 @@ class ConexaoDB {
         
     }
 
-     function sql_clean($string) {
+     public function sql_clean($string) {
         $string = stripslashes($string);
         $string = strip_tags($string);
         $string = mysql_real_escape_string($string);
@@ -163,20 +168,13 @@ class ConexaoDB {
     
 
     // Metodo sql
-    function sql($query) {
+    public function sql($query) {
 
         switch ($this->base) {
            
             case 'mysql':
                 $this->query = $query;
-
-                $result = @mysql_query($this->query);
-                if (!$result) {
-                    return ('Invalid query: ' . mysql_error());
-                } else {
-                    return $result;
-                }
-
+                return  mysql_query($this->query);
                 
                 break;
 
@@ -265,7 +263,7 @@ class ConexaoDB {
 
        }
 
-  function mysql2table($query,$model='',$decode='false'){
+  public function mysql2table($query,$model='',$decode='false'){
 
          $this->query = $query;
 
@@ -280,14 +278,15 @@ class ConexaoDB {
           }
 
           $table = "<script type='text/javascript'>
-            $('.sorting').each(function(i){
-                var coluna = $(this).attr('aria-label');
+            $('.sorting').each(public function(i){
+                private coluna = $(this).attr('aria-label');
                 // Aplica a cor de fundo
                 $(this).addClass(coluna);
             });
         </script>";
           //Montando o cabeçalho da tabela
-          $table .= "<table class='table table-striped table-bordered $model' url='".info_filename()."'>";
+          // $table .= "<table class='table table-striped table-bordered $model' url='".info_filename()."'>";
+          $table .= "<table class='table table-striped table-bordered $model' url=''>";
           $table .="<thead>";
           $table .= '<tr>';
           for($i = 0;$i < $num_fields; $i++){
@@ -341,7 +340,7 @@ class ConexaoDB {
           return $table;
       }
     // Transforma o Select em Json
-    function mysql2json($query, $indented = false) {
+    public function mysql2json($query, $indented = false) {
         $query = mysql_query($query) or die ('MyJSON - SQLtoJSON - Cannot make query');
         
         if(!$numFields = mysql_num_fields($query)) {
@@ -412,7 +411,7 @@ class ConexaoDB {
 
     //This assumes an open database connection 
     //I also use a constant DB_DB for current database. 
-    function GetFieldInfo($table) { 
+    public function GetFieldInfo($table) { 
       if($table == '') return false; 
       $fields = mysql_list_fields(DB_DB, $table); 
       if($fields){ 
@@ -421,7 +420,7 @@ class ConexaoDB {
       return false; 
     } 
 
-    function datatable($query){
+    public function datatable($query){
         
         $sql = mysql_query($query) or die ('MyJSON - SQLtoJSON - Cannot make query');
 
@@ -447,15 +446,6 @@ class ConexaoDB {
 
     }
     
-
-    /**
-     * public JSONtoSQL
-     * Converts from JSON to some MySQL queries
-     *
-     *@param string json
-     *@param string table
-     *
-    */
     public function sql2json($json, $table) {
         $tmpjson = json_decode($json);
         $json = array();
@@ -512,13 +502,13 @@ class ConexaoDB {
         
         return true;
     } 
-    function colunas($query){
+    public function colunas($query){
          $this->query = $query;
         $resultado = mysql_fetch_field($query);
         return $resultado;  
     }
     
-    function retorno($query) {
+    public function retorno($query) {
         switch ($this->base) {
 
             case 'mysql':
@@ -573,7 +563,7 @@ class ConexaoDB {
     }
 
       // Numero de Linhas
-    function numRows($result) {
+    public function numRows($result) {
        switch ($this->base) {
            case 'mysql':
                 $rows = @mysql_num_rows($result);
@@ -630,7 +620,7 @@ class ConexaoDB {
     }
 
     // Metodo all
-    function mysql_all($tabela) {
+    public function mysql_all($tabela) {
         //$this->query = $query;
         $this->query = "SELECT * FROM $tabela";
 
@@ -707,7 +697,7 @@ class ConexaoDB {
     }
 
         // Numero de Colunas    
-    function numCols($result) {
+    public function numCols($result) {
         $cols = @mysql_num_fields($result);
         if (!$cols) {
             return $this->mysqlRaiseError();
@@ -716,13 +706,13 @@ class ConexaoDB {
     }
 
     // Metodo que retorna o ultimo id de uma inseraao
-    function mysql_lastid() {
+    public function mysql_lastid() {
         return mysql_insert_id($this->link);
     }
 
     // Metodo fechar conexao
 
-    function fechar() {
+    public function fechar() {
         switch ($this->base) {
             case 'mysql':
                 return mysql_close($this->link);
@@ -745,7 +735,7 @@ class ConexaoDB {
         }
     }
 
-    function mysql_insert($tabela, $dados,$duplicate_key='',$debug=false) {
+    public function mysql_insert($tabela, $dados,$duplicate_key='',$debug=false) {
         // Colunas e Valores
        $qtd = count($dados);
         $i=0;
@@ -787,17 +777,16 @@ class ConexaoDB {
     
     }
 
-    function token(){
+    public function token(){
         return md5(uniqid(rand(), true));
     }
 
-    function mysql_delete($tabela, $where) {
+    public function mysql_delete($tabela, $where) {
         $this->query = "DELETE FROM $tabela WHERE $where";
-        $sql =  mysql_query($this->query) or die($this->query);
-        return mysql_affected_rows();
+        return mysql_query($this->query) or die($this->query);
     }
 
-    function mysql_update($tabela, $dados, $where) {
+    public function mysql_update($tabela, $dados, $where, $debug=false) {
 
         $qtd = count($dados);
         $i=0;
@@ -810,9 +799,14 @@ class ConexaoDB {
             }
         }
 
-        // return "UPDATE $tabela SET $campos WHERE $where";
         $this->query = "UPDATE $tabela SET $campos WHERE $where";
-        return mysql_query($this->query) or die("Nao foi possivel alterar o registro na base");
+
+        if ($debug==true) {
+            return $this->query;
+        } else {
+            return mysql_query($this->query) or die("Nao foi possivel alterar o registro na base");    
+        }
+        
     }
 
 
