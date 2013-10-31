@@ -16,89 +16,86 @@
 class Conexao {
 
     // Mysql
-    private $MySQL_server         = "localhost";
-    private $MySQL_user           = "root";
-    private $MySQL_password       = "mysql";
-    private $MySQL_database       = "teste";
+    private $_MySQL_server         = "localhost";
+    private $_MySQL_user           = "root";
+    private $_MySQL_password       = "mysql";
+    private $_MySQL_database       = "teste";
     
     // Microsoft SQL Server
-    private $Mssql_server         = "10.72.202.25";
-    private $Mssql_user           = "mssql";
-    private $Mssql_password       = "123456";
-    private $Mssql_database       = "REPORTS_PRD";
+    private $_Mssql_server         = "";
+    private $_Mssql_user           = "";
+    private $_Mssql_password       = "";
+    private $_Mssql_database       = "";
     
     // mSQL
-    private $mSQL_server          = "";
-    private $mSQL_user            = "";
-    private $mSQL_password        = "";
-    private $mSQL_database        = "";
+    private $_mSQL_server          = "";
+    private $_mSQL_user            = "";
+    private $_mSQL_password        = "";
+    private $_mSQL_database        = "";
     
     // SQLite
-    private $SQLite_user          = "";
-    private $SQLite_password      = "";
-    private $SQLite_database      = "";
+    private $_SQLite_user          = "";
+    private $_SQLite_password      = "";
+    private $_SQLite_database      = "";
     
     // SQLite3
-    private $SQLite3_user         = "";
-    private $SQLite3_password     = "";
-    private $SQLite3_database     = "";
+    private $_SQLite3_user         = "";
+    private $_SQLite3_password     = "";
+    private $_SQLite3_database     = "";
     
     
     // Postgree
-    private $PostgreeSQL_server   = "";
-    private $PostgreeSQL_user     = "";
-    private $PostgreeSQL_password = "";
-    private $PostgreeSQL_database = "";
+    private $_PostgreeSQL_server   = "";
+    private $_PostgreeSQL_user     = "";
+    private $_PostgreeSQL_password = "";
+    private $_PostgreeSQL_database = "";
     
     // Firebird/InterBase
-    private $Firebird_user        = "";
-    private $Firebird_password    = "";
-    private $Firebird_database    = "";
+    private $_Firebird_user        = "";
+    private $_Firebird_password    = "";
+    private $_Firebird_database    = "";
     
     
     // Oracle OCI8
-    private $Oracle_server        = "";
-    private $Oracle_user          = "";
-    private $Oracle_password      = "";
-    private $Oracle_database      = "";
+    private $_Oracle_server        = "";
+    private $_Oracle_user          = "";
+    private $_Oracle_password      = "";
+    private $_Oracle_database      = "";
     
     // LDAP
-    private $ldap_server          = 'svr.domain.com';
-    private $ldap_user            = 'administrator';
-    private $ldap_pass            = 'PASSWORD_HERE';
-    private $ldap_tree            = "OU=SBSUsers,OU=Users,OU=MyBusiness,DC=myDomain,DC=local";
-    private $ldap_bind            ="";
+    private $_ldap_server          = 'svr.domain.com';
+    private $_ldap_user            = 'administrator';
+    private $_ldap_pass            = 'PASSWORD_HERE';
+    private $_ldap_tree            = "OU=SBSUsers,OU=Users,OU=MyBusiness,DC=myDomain,DC=local";
+    private $_ldap_bind            ="";
     
     // Variaveis Principais
-    private $base                 = "mysql";
-    private $query                = "";
-    private $link                 = "";
-
-
+    public $_base                 = "mysql";
+    public $_query                = "";
+    public $_link                 = "";
     
     // Metodos da classe
     //Metodo Construtor
 
     public function __construct($base='mysql'){
-        // 
-        $this->base = $base;
+        $this->_base = $base;
         $this->conectar();
     }
 
     // Metodo de Conexao com o banco
     public function conectar() {
 
-        switch ($this->base) {
+        switch ($this->_base) {
 
             case 'mysql':
-                $this->link = mysql_connect($this->MySQL_server, $this->MySQL_user, $this->MySQL_password);
+                $this->_link = mysql_connect($this->_MySQL_server, $this->_MySQL_user, $this->_MySQL_password);
               
-                 if (!$this->link ) {
+                 if (!$this->_link ) {
                     return ("Erro de conexao");
-                } elseif (!mysql_select_db($this->MySQL_database, $this->link)) {
-                    return ("Erro na hora de selecionar o banco: ".$this->MySQL_database);
+                } elseif (!mysql_select_db($this->_MySQL_database, $this->_link)) {
+                    return ("Erro na hora de selecionar o banco: ".$this->_MySQL_database);
                 } else {
-                    return $this->link;
+                    return $this->_link;
                 } 
 
                 
@@ -106,53 +103,53 @@ class Conexao {
                 break;
 
             case 'sqlserver':
-                $this->link = mssql_connect($this->Mssql_server, $this->Mssql_user, $this->Mssql_password);
-                if (!$this->link) {
-                    die("Erro de conexao: Servidor=".$this->Mssql_server.",usuario=". $this->Mssql_user);
-                } elseif (!mssql_select_db($this->Mssql_database, $this->link)) {
-                    die("Erro na hora de selecionar o banco ".$this->Mssql_database);
+                $this->_link = mssql_connect($this->_Mssql_server, $this->_Mssql_user, $this->_Mssql_password);
+                if (!$this->_link) {
+                    die("Erro de conexao: Servidor=".$this->_Mssql_server.",usuario=". $this->_Mssql_user);
+                } elseif (!mssql_select_db($this->_Mssql_database, $this->_link)) {
+                    die("Erro na hora de selecionar o banco ".$this->_Mssql_database);
                 }   
                 break;
 
             case 'msql':
-                $this->link = msql_connect($this->mSQL_server, $this->mSQL_user, $this->mSQL_password);
-                if (!$this->link) {
-                    die("Erro de conexao: Servidor=".$this->mSQL_server.",usuario=". $this->mSQL_user);
-                } elseif (!msql_select_db($this->sqlserver_database, $this->link)) {
+                $this->_link = msql_connect($this->_mSQL_server, $this->_mSQL_user, $this->_mSQL_password);
+                if (!$this->_link) {
+                    die("Erro de conexao: Servidor=".$this->_mSQL_server.",usuario=". $this->_mSQL_user);
+                } elseif (!msql_select_db($this->_sqlserver_database, $this->_link)) {
                     die("Erro na hora de selecionar o banco");
                 }   
                 break;
 
             case 'sqllite':
-                 $this->link = sqlite_open($this->SQLite_database, 0666, $sqliteerror);
+                 $this->_link = sqlite_open($this->_SQLite_database, 0666, $sqliteerror);
                 break;
 
              case 'sqllite3':
-                 $this->link = PDO($this->SQLite3_database, 0666, $sqliteerror);
+                 $this->_link = PDO($this->_SQLite3_database, 0666, $sqliteerror);
                 break;
 
             case 'postgree':
-                $host  = $this->PostgreeSQL_server;
-                $user  = $this->PostgreeSQL_user;
-                $senha = $this->PostgreeSQL_password;
-                $banco = $this->PostgreeSQL_database;
-                $this->link = pg_connect("host=$host user=$user password=$senha $dbname=$banco");
+                $host  = $this->_PostgreeSQL_server;
+                $user  = $this->_PostgreeSQL_user;
+                $senha = $this->_PostgreeSQL_password;
+                $banco = $this->_PostgreeSQL_database;
+                $this->_link = pg_connect("host=$host user=$user password=$senha $dbname=$banco");
                 break;
 
             case 'firebird':
-               $this->link = ibase_connect($this->Firebird_database, $this->Firebird_user, $this->Firebird_password);
+               $this->_link = ibase_connect($this->_Firebird_database, $this->_Firebird_user, $this->_Firebird_password);
                 break;
 
             case 'oracle':
-                $this->link = oci_connect ($this->Oracle_user, $this->Oracle_password, $this->Oracle_server);
+                $this->_link = oci_connect ($this->_Oracle_user, $this->_Oracle_password, $this->_Oracle_server);
                 break;
 
             case 'ldap':
-                $this->link = ldap_connect($this->ldap_host, 389) or die("Not connect: $ldaphost ");
+                $this->_link = ldap_connect($this->_ldap_host, 389) or die("Not connect: $ldaphost ");
                 //Setting up server query options
                 ldap_set_option($lconn, LDAP_OPT_PROTOCOL_VERSION, 3);
                 ldap_set_option($lconn, LDAP_OPT_REFERRALS, 0);
-                $this->ldap_bind = @ldap_bind($lconn, "$domain\\$user", "$pass");
+                $this->_ldap_bind = @ldap_bind($lconn, "$domain\\$user", "$pass");
                 break;
         }
 
@@ -170,17 +167,17 @@ class Conexao {
     // Metodo sql
     public function sql($query) {
 
-        switch ($this->base) {
+        switch ($this->_base) {
            
             case 'mysql':
-                $this->query = $query;
-                return  mysql_query($this->query);
+                $this->_query = $query;
+                return  mysql_query($this->_query);
                 
                 break;
 
             case 'sqlserver':
-                $this->query = $query;
-                if ($result = mssql_query($this->query, $this->link) or die ('Erro no SQL: <br> <code>'.$this->sql."</code>") ) {
+                $this->_query = $query;
+                if ($result = mssql_query($this->_query, $this->_link) or die ('Erro no SQL: <br> <code>'.$this->_sql."</code>") ) {
                     return $result;
                 } else {
                     return 0;
@@ -188,8 +185,8 @@ class Conexao {
                 break;
             
             case 'postgree':
-                $this->query = $query;
-                if ($result = pg_exec($this->link, $this->query) or die ('Erro no SQL: <br> <code>'.$this->sql."</code>") ) {
+                $this->_query = $query;
+                if ($result = pg_exec($this->_link, $this->_query) or die ('Erro no SQL: <br> <code>'.$this->_sql."</code>") ) {
                     return $result;
                 } else {
                     return 0;
@@ -197,8 +194,8 @@ class Conexao {
                 break;
 
             case 'msql':
-                 $this->query = $query;
-                if ($result = ibase_query($this->link, $this->query) or die ('Erro no SQL: <br> <code>'.$this->sql."</code>") ) {
+                 $this->_query = $query;
+                if ($result = ibase_query($this->_link, $this->_query) or die ('Erro no SQL: <br> <code>'.$this->_sql."</code>") ) {
                     return $result;
                 } else {
                     return 0;
@@ -206,8 +203,8 @@ class Conexao {
                 break;
 
             case 'sqllite':
-                 $this->query = $query;
-                if ($result = sqlite_query($this->link, $this->query) or die ('Erro no SQL: <br> <code>'.$this->sql."</code>") ) {
+                 $this->_query = $query;
+                if ($result = sqlite_query($this->_link, $this->_query) or die ('Erro no SQL: <br> <code>'.$this->_sql."</code>") ) {
                     return $result;
                 } else {
                     return 0;
@@ -215,9 +212,9 @@ class Conexao {
                 break;  
 
             case 'sqllite3':
-                 $this->query = $query;
-                 $db = $this->link;
-                if ($result = $db->exec($this->query) or die ('Erro no SQL: <br> <code>'.$this->query."</code>") ) {
+                 $this->_query = $query;
+                 $db = $this->_link;
+                if ($result = $db->exec($this->_query) or die ('Erro no SQL: <br> <code>'.$this->_query."</code>") ) {
                     return $result;
                 } else {
                     return 0;
@@ -225,8 +222,8 @@ class Conexao {
                 break;
             
             case 'firebird':
-                 $this->query = $query;
-                if ($result = ibase_execute($this->query) or die ('Erro no SQL: <br> <code>'.$this->sql."</code>") ) {
+                 $this->_query = $query;
+                if ($result = ibase_execute($this->_query) or die ('Erro no SQL: <br> <code>'.$this->_sql."</code>") ) {
                     return $result;
                 } else {
                     return 0;
@@ -234,8 +231,8 @@ class Conexao {
                 break;
 
             case 'oracle':
-                 $this->query = $query;
-                if ($result = oci_execute($this->link, $this->query) or die ('Erro no SQL: <br> <code>'.$this->sql."</code>") ) {
+                 $this->_query = $query;
+                if ($result = oci_execute($this->_link, $this->_query) or die ('Erro no SQL: <br> <code>'.$this->_sql."</code>") ) {
                     return $result;
                 } else {
                     return 0;
@@ -244,15 +241,15 @@ class Conexao {
 
             case 'ldap':
                 // binding to ldap server
-                $this->ldap_bind = ldap_bind( $this->link, $this->ldap_prdn, $this->ldap_ppass );
+                $this->_ldap_bind = ldap_bind( $this->_link, $this->_ldap_prdn, $this->_ldap_ppass );
 
                 // verify binding
-                if ( $this->ldap_bind ) {
+                if ( $this->_ldap_bind ) {
                     $filter="uid=*";
                     $justthese = array( "uid" );
 
-                    $sr=ldap_read( $this->link, $srdn, $filter, $justthese );
-                    return ldap_get_entries( $this->link, $sr );
+                    $sr=ldap_read( $this->_link, $srdn, $filter, $justthese );
+                    return ldap_get_entries( $this->_link, $sr );
 
                 } else {
                     return  "LDAP conn ok...";
@@ -265,9 +262,9 @@ class Conexao {
 
   public function mysql2table($query,$model='',$decode='false'){
 
-         $this->query = $query;
+         $this->_query = $query;
 
-          $qry = mysql_query($this->query);
+          $qry = mysql_query($this->_query);
 
           //Pegando os nomes dos campos
           $num_fields = mysql_num_fields($qry);
@@ -344,7 +341,7 @@ class Conexao {
         $query = mysql_query($query) or die ('MyJSON - SQLtoJSON - Cannot make query');
         
         if(!$numFields = mysql_num_fields($query)) {
-            $this->errors[] = 'SQLtoJSON - Cannot get number of MySQL fields';
+            $this->_errors[] = 'SQLtoJSON - Cannot get number of MySQL fields';
             return false;
         }
         
@@ -353,7 +350,7 @@ class Conexao {
             $fields[$i] = mysql_field_name($query, $i);
         
         if(!$numRows = mysql_num_rows($query)) {
-            $this->errors[] = 'SQLtoJSON - Cannot get number of MySQL rows';
+            $this->_errors[] = 'SQLtoJSON - Cannot get number of MySQL rows';
             return 0;
         }
         
@@ -469,7 +466,7 @@ class Conexao {
         // Test recived data....
         for($i = 0; $i < count($rows); $i++) {
             if($rows[$i] != $json_fields[$i]) {
-                $this->errors[] = 'MySQL table fields are not the same as the JSON or are not in the same order';
+                $this->_errors[] = 'MySQL table fields are not the same as the JSON or are not in the same order';
                 return false;
             }
         }
@@ -503,57 +500,57 @@ class Conexao {
         return true;
     } 
     public function colunas($query){
-         $this->query = $query;
+         $this->_query = $query;
         $resultado = mysql_fetch_field($query);
         return $resultado;  
     }
     
     public function retorno($query) {
-        switch ($this->base) {
+        switch ($this->_base) {
 
             case 'mysql':
-                $this->query = $query;
+                $this->_query = $query;
                 $resultado = mysql_fetch_array($query);
                 return $resultado;  
                 break;
 
             case 'sqllite':
-                 $this->query = $query;
+                 $this->_query = $query;
                 $resultado = sqlite_fetch_array($query);
                 return $resultado;  
                 break;
 
             case 'sqllite3':
-                $db = $this->link;
+                $db = $this->_link;
                 $resultado = $db->query($query);
                 break;
             
             case 'sqlserver':
-                $this->query = $query;
+                $this->_query = $query;
                 $resultado = mssql_fetch_array($query);
                 return $resultado;
                 break;
 
             case 'postgree':
-                $this->query = $query;
+                $this->_query = $query;
                 $resultado = pg_fetch_array($query);
                 return $resultado;
                 break;
 
             case 'firebird':
-                $this->query = $query;
+                $this->_query = $query;
                 $resultado = ibase_fetch_object($query);
                 return $resultado;
                 break;
 
             case 'msql':
-                $this->query = $query;
+                $this->_query = $query;
                 $resultado = msql_fetch_array($query);
                 return $resultado;
                 break;
 
             case 'oracle':
-                $this->query = $query;
+                $this->_query = $query;
                 $resultado = oci_fetch_array($query);
                 return $resultado;
                 break;
@@ -564,7 +561,7 @@ class Conexao {
 
       // Numero de Linhas
     public function numRows($result) {
-       switch ($this->base) {
+       switch ($this->_base) {
            case 'mysql':
                 $rows = @mysql_num_rows($result);
                 if ($rows === null) {
@@ -621,12 +618,12 @@ class Conexao {
 
     // Metodo all
     public function mysql_all($tabela) {
-        //$this->query = $query;
-        $this->query = "SELECT * FROM $tabela";
+        //$this->_query = $query;
+        $this->_query = "SELECT * FROM $tabela";
 
-        switch ($this->base) {
+        switch ($this->_base) {
             case 'mysql':
-                if ($result = mysql_query($this->query, $this->link)) {
+                if ($result = mysql_query($this->_query, $this->_link)) {
                     return $result;
                 } else {
                     return 0;
@@ -634,7 +631,7 @@ class Conexao {
                 break;
 
             case 'msql':
-                if ($result = msql_query($this->query, $this->link)) {
+                if ($result = msql_query($this->_query, $this->_link)) {
                     return $result;
                 } else {
                     return 0;
@@ -642,7 +639,7 @@ class Conexao {
                 break;
 
             case 'sqlserver':
-                if ($result = mssql_query($this->query, $this->link)) {
+                if ($result = mssql_query($this->_query, $this->_link)) {
                     return $result;
                 } else {
                     return 0;
@@ -650,7 +647,7 @@ class Conexao {
                 break;
 
             case 'sqllite':
-                if ($result = sqlite_exec($this->query, $this->link)) {
+                if ($result = sqlite_exec($this->_query, $this->_link)) {
                     return $result;
                 } else {
                     return 0;
@@ -658,7 +655,7 @@ class Conexao {
                 break;
 
             case 'sqllite3':
-                if ($result = sqlite_exec($this->query, $this->link)) {
+                if ($result = sqlite_exec($this->_query, $this->_link)) {
                     return $result;
                 } else {
                     return 0;
@@ -666,7 +663,7 @@ class Conexao {
                 break;
 
             case 'firebird':
-                if ($result = ibase_execute($this->query)) {
+                if ($result = ibase_execute($this->_query)) {
                     return $result;
                 } else {
                     return 0;
@@ -674,7 +671,7 @@ class Conexao {
                 break;
 
             case 'postgree':
-                if ($result = pg_exec($this->link, $this->query)) {
+                if ($result = pg_exec($this->_link, $this->_query)) {
                     return $result;
                 } else {
                     return 0;
@@ -682,7 +679,7 @@ class Conexao {
                 break;
 
             case 'oracle':
-                if ($result = oci_execute($this->query)) {
+                if ($result = oci_execute($this->_query)) {
                     return $result;
                 } else {
                     return 0;
@@ -700,38 +697,38 @@ class Conexao {
     public function numCols($result) {
         $cols = @mysql_num_fields($result);
         if (!$cols) {
-            return $this->mysqlRaiseError();
+            return $this->_mysqlRaiseError();
         }
         return $cols;
     }
 
     // Metodo que retorna o ultimo id de uma inseraao
     public function mysql_lastid() {
-        return mysql_insert_id($this->link);
+        return mysql_insert_id($this->_link);
     }
 
     // Metodo fechar conexao
 
     public function fechar() {
-        switch ($this->base) {
+        switch ($this->_base) {
             case 'mysql':
-                return mysql_close($this->link);
+                return mysql_close($this->_link);
                 break;
             
             case 'sqlserver':
-                return mssql_close($this->link);    
+                return mssql_close($this->_link);    
                 break;
 
             case 'postgree':
-                return pg_close($this->link);
+                return pg_close($this->_link);
                 break;
 
 
         }
-        if($this->base=='mysql'){
-            return mysql_close($this->link);
-        } else if($this->base=='sqlserver'){
-            return mssql_close ($this->link);
+        if($this->_base=='mysql'){
+            return mysql_close($this->_link);
+        } else if($this->_base=='sqlserver'){
+            return mssql_close ($this->_link);
         }
     }
 
@@ -767,12 +764,12 @@ class Conexao {
         }
         
 
-        $this->query = "INSERT INTO $tabela ($campos) VALUES ($valores) $campos_key";
+        $this->_query = "INSERT INTO $tabela ($campos) VALUES ($valores) $campos_key";
 
         if ($debug==true) {
-            return $this->query;
+            return $this->_query;
         } else {
-           return mysql_query($this->query) or die("Nao foi possivel inserir o registro na base: " . $this->query);
+           return mysql_query($this->_query) or die("Nao foi possivel inserir o registro na base: " . $this->_query);
         }
     
     }
@@ -782,8 +779,8 @@ class Conexao {
     }
 
     public function mysql_delete($tabela, $where) {
-        $this->query = "DELETE FROM $tabela WHERE $where";
-        return mysql_query($this->query) or die($this->query);
+        $this->_query = "DELETE FROM $tabela WHERE $where";
+        return mysql_query($this->_query) or die($this->_query);
     }
 
     public function mysql_update($tabela, $dados, $where, $debug=false) {
@@ -799,12 +796,12 @@ class Conexao {
             }
         }
 
-        $this->query = "UPDATE $tabela SET $campos WHERE $where";
+        $this->_query = "UPDATE $tabela SET $campos WHERE $where";
 
         if ($debug==true) {
-            return $this->query;
+            return $this->_query;
         } else {
-            return mysql_query($this->query) or die("Nao foi possivel alterar o registro na base");    
+            return mysql_query($this->_query) or die("Nao foi possivel alterar o registro na base");    
         }
         
     }
