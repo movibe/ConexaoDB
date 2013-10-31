@@ -22,17 +22,10 @@ class Conexao {
     private $_MySQL_database       = "teste";
     
     // Microsoft SQL Server
-<<<<<<< HEAD
     private $_Mssql_server         = "";
     private $_Mssql_user           = "";
     private $_Mssql_password       = "";
     private $_Mssql_database       = "";
-=======
-    private $Mssql_server         = "";
-    private $Mssql_user           = "";
-    private $Mssql_password       = "";
-    private $Mssql_database       = "";
->>>>>>> c5ef39842d45d66fe1263f358ac3592b239a447a
     
     // mSQL
     private $_mSQL_server          = "";
